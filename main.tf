@@ -24,6 +24,7 @@ resource "aws_instance" "web" {
   }
 }
 
+# --------------------------------------------------------------------------------------
 # working code part but add new security group and allowing 22 port 
 # resource "aws_default_vpc" "main" {
 #   tags = { Name = "main" }
@@ -48,14 +49,10 @@ resource "aws_instance" "web" {
 #     cidr_blocks = ["0.0.0.0/0"]
 #   }
 # }
-
-resource "aws_security_group" "default" {
-  name        = "default"
-  description = "Default Security Group"
-}
+# --------------------------------------------------------------------------------------
 
 resource "aws_security_group_rule" "ingress_rule" {
-  security_group_id = aws_security_group.default.id
+  security_group_id = data.aws_security_group.selected_sg.id
 
   type      = "ingress"
   from_port = 22
@@ -65,7 +62,7 @@ resource "aws_security_group_rule" "ingress_rule" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 resource "aws_security_group_rule" "egress_rule" {
-  security_group_id = aws_security_group.default.id
+  security_group_id = data.aws_security_group.selected_sg.id
 
   type = "egress"
   # Allow all egress traffic
